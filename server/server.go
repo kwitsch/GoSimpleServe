@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 
@@ -27,6 +28,10 @@ func New(verbose bool) *Server {
 	s.mux = mux
 
 	return &s
+}
+
+func (s *Server) Start() error {
+	return http.ListenAndServe(fmt.Sprintf("%d", serverPort), s.mux)
 }
 
 func (s *Server) getFiles(w http.ResponseWriter, r *http.Request) {
