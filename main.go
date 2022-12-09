@@ -6,7 +6,6 @@ package main
 import (
 	"os"
 	"time"
-	_ "time/tzdata"
 
 	reaper "github.com/ramr/go-reaper"
 )
