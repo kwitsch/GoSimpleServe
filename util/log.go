@@ -1,0 +1,48 @@
+package util
+
+import "fmt"
+
+type Log struct {
+	prefix  *string
+	verbose *bool
+}
+
+func NewLog(prefix string, verbose bool) *Log {
+	result := &Log{
+		prefix:  &prefix,
+		verbose: &verbose,
+	}
+
+	return result
+}
+
+func (l *Log) M(params ...interface{}) {
+	fmt.Println(*l.prefix, ToString(params...))
+}
+
+func (l *Log) V(params ...interface{}) {
+	if *l.verbose {
+		l.M(params...)
+	}
+}
+
+func (l *Log) E(param interface{}) error {
+	var err error
+	if e, ok := param.(error); ok {
+		err = e
+	} else {
+		err = NewError(param)
+	}
+	l.M("Error:", err)
+	return err
+}
+
+func (l *Log) Return(params ...interface{}) {
+	if *l.verbose {
+		l.M("Returns:", ToString(params...))
+	}
+}
+
+func (l *Log) ReturnSuccess() {
+	l.Return("Success")
+}
