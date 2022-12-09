@@ -16,3 +16,7 @@
 
 # Ginko results
 coverage.txt
+
+# Docker-Compose tests
+docker-compose.yaml
+dockerdata

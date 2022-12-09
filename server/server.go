@@ -31,7 +31,7 @@ func New(verbose bool) *Server {
 }
 
 func (s *Server) Start() error {
-	return http.ListenAndServe(fmt.Sprintf("%d", serverPort), s.mux)
+	return http.ListenAndServe(fmt.Sprintf(":%d", serverPort), s.mux)
 }
 
 func (s *Server) getFiles(w http.ResponseWriter, r *http.Request) {
