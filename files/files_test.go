@@ -22,7 +22,7 @@ var _ = Describe("Files", func() {
 
 	When("are present", func() {
 		BeforeEach(func() {
-			_, err = os.Create(filepath.Join(filesDir, indexFileName))
+			_, err = os.Create(filepath.Join(filesDir, IndexFileName))
 			Expect(err).Should(Succeed())
 		})
 

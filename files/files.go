@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	staticFilesDir = "/static"
-	indexFileName  = "index.html"
+	StaticFilesDir = "/static"
+	IndexFileName  = "index.html"
 )
 
 var (
@@ -19,7 +19,7 @@ var (
 )
 
 func init() {
-	staticFiles, hasIndex = getDirContent(staticFilesDir)
+	staticFiles, hasIndex = getDirContent(StaticFilesDir)
 }
 
 func GetFiles() string {
@@ -49,7 +49,7 @@ func getDirContent(dir string) (string, bool) {
 				buffer.WriteString(subPath)
 				buffer.WriteString("\n")
 
-				if subPath == indexFileName {
+				if subPath == IndexFileName {
 					hasIdx = true
 				}
 			}
