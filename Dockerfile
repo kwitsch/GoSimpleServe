@@ -39,3 +39,4 @@ ENV VERBOSE=False \
     ENDPOINT_FILES=False
 
 ENTRYPOINT [ "/app/gss" ]
+CMD [ "serve" ]
