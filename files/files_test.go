@@ -1,6 +1,7 @@
 package files
 
 import (
+	"io/fs"
 	"os"
 	"path/filepath"
 
@@ -42,6 +43,20 @@ var _ = Describe("Files", func() {
 			Expect(hi).Should(Equal(true))
 			Expect(f).Should(ContainSubstring("test1.txt"))
 			Expect(f).Should(ContainSubstring("test2.txt"))
+		})
+
+		It("has files", func() {
+			sd := "subdir"
+			err = os.Mkdir(filepath.Join(filesDir, sd), fs.ModePerm)
+			Expect(err).Should(Succeed())
+
+			fp := filepath.Join(sd, "test.txt")
+			_, err = os.Create(filepath.Join(filesDir, fp))
+			Expect(err).Should(Succeed())
+
+			f, hi := getDirContent(filesDir)
+			Expect(hi).Should(Equal(true))
+			Expect(f).Should(ContainSubstring(fp))
 		})
 	})
 

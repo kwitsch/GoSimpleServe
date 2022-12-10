@@ -45,7 +45,7 @@ func getDirContent(dir string) (string, bool) {
 						"\\"),
 					"/"))
 
-			if len(subPath) > 0 {
+			if len(subPath) > 0 && !info.IsDir() {
 				buffer.WriteString(subPath)
 				buffer.WriteString("\n")
 
