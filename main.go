@@ -5,7 +5,6 @@ package main
 
 import (
 	"os"
-	"time"
 
 	"github.com/kwitsch/GoSimpleServe/config"
 	"github.com/kwitsch/GoSimpleServe/files"
@@ -16,12 +15,6 @@ import (
 
 func init() {
 	go reaper.Reap()
-
-	if lt, err := os.ReadFile("/etc/localtime"); err == nil {
-		if t, err := time.LoadLocationFromTZData("", lt); err == nil {
-			time.Local = t
-		}
-	}
 }
 
 func main() {
