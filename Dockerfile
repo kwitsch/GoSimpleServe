@@ -40,3 +40,5 @@ ENV VERBOSE=False \
 
 ENTRYPOINT [ "/app/gss" ]
 CMD [ "serve" ]
+
+HEALTHCHECK --start-period=20s CMD [ "/app/gss", "healthcheck" ]

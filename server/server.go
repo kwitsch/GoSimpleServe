@@ -19,7 +19,7 @@ type Server struct {
 
 func New() *Server {
 	s := Server{
-		log: *util.NewLog("server", config.IsVerbose()),
+		log: *util.NewLog("Server:", config.IsVerbose()),
 	}
 
 	mux := http.NewServeMux()
