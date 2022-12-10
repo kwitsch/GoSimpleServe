@@ -1,11 +1,5 @@
 package config
 
-import (
-	"errors"
-	"os"
-	"strings"
-)
-
 const configFilePath = "/config_template.yaml"
 
 var (
@@ -35,23 +29,4 @@ func HasConfigTemplate() bool {
 
 func GetConfig() string {
 	return configFile
-}
-
-func readConfig(file string) (string, bool) {
-	if _, err := os.Stat(file); errors.Is(err, os.ErrNotExist) {
-		return "", false
-	}
-
-	res := ""
-
-	return res, true
-}
-
-func getEnvBool(varname string, defaultval bool) bool {
-	val, exists := os.LookupEnv(varname)
-	if exists {
-		return (strings.TrimSpace(strings.ToLower(val)) == "true")
-	}
-
-	return defaultval
 }
