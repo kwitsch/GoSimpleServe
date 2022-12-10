@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/kwitsch/GoSimpleServe/config"
 	"github.com/kwitsch/GoSimpleServe/files"
 	"github.com/kwitsch/GoSimpleServe/util"
 )
@@ -25,6 +26,11 @@ func New(verbose bool) *Server {
 	mux.Handle("/", http.FileServer(http.Dir(files.StaticFilesDir)))
 	mux.HandleFunc("/files", s.getFiles)
 
+	if config.HasConfigTemplate() {
+		s.log.V("has config")
+		mux.HandleFunc("/config", s.getConfig)
+	}
+
 	s.mux = mux
 
 	return &s
@@ -39,4 +45,11 @@ func (s *Server) getFiles(w http.ResponseWriter, r *http.Request) {
 	f := files.GetFiles()
 	s.log.V("responese:\n", f)
 	io.WriteString(w, f)
+}
+
+func (s *Server) getConfig(w http.ResponseWriter, r *http.Request) {
+	s.log.V("got /config request")
+	c := config.GetConfig()
+	s.log.V("responese:\n", c)
+	io.WriteString(w, c)
 }
