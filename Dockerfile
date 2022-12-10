@@ -35,6 +35,7 @@ WORKDIR /app
 
 COPY --from=build /tmp/gss /app/gss
 
-ENV VERBOSE=False
+ENV VERBOSE=False \
+    ENDPOINT_FILES=False
 
 ENTRYPOINT [ "/app/gss" ]

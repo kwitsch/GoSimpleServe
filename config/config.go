@@ -10,17 +10,23 @@ const configFilePath = "/config_template.yaml"
 
 var (
 	isVerbose         = false
+	filesEPEnabled    = false
 	hasConfigTemplate = false
 	configFile        = ""
 )
 
 func init() {
-	isVerbose = (strings.TrimSpace(strings.ToLower(os.Getenv("VERBOSE"))) == "true")
+	isVerbose = getEnvBool("VERBOSE", false)
+	filesEPEnabled = getEnvBool("ENDPOINT_FILES", false)
 	configFile, hasConfigTemplate = readConfig(configFilePath)
 }
 
 func IsVerbose() bool {
 	return isVerbose
+}
+
+func FilesEndpointEnabled() bool {
+	return filesEPEnabled
 }
 
 func HasConfigTemplate() bool {
@@ -39,4 +45,13 @@ func readConfig(file string) (string, bool) {
 	res := ""
 
 	return res, true
+}
+
+func getEnvBool(varname string, defaultval bool) bool {
+	val, exists := os.LookupEnv(varname)
+	if exists {
+		return (strings.TrimSpace(strings.ToLower(val)) == "true")
+	}
+
+	return defaultval
 }

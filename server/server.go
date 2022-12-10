@@ -17,14 +17,18 @@ type Server struct {
 	mux *http.ServeMux
 }
 
-func New(verbose bool) *Server {
+func New() *Server {
 	s := Server{
-		log: *util.NewLog("server", verbose),
+		log: *util.NewLog("server", config.IsVerbose()),
 	}
 
 	mux := http.NewServeMux()
 	mux.Handle("/", http.FileServer(http.Dir(files.StaticFilesDir)))
-	mux.HandleFunc("/files", s.getFiles)
+
+	if config.FilesEndpointEnabled() {
+		s.log.V("files enpoint is enabled")
+		mux.HandleFunc("/files", s.getFiles)
+	}
 
 	if config.HasConfigTemplate() {
 		s.log.V("has config")

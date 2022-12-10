@@ -18,15 +18,14 @@ func init() {
 }
 
 func main() {
-	verbose := config.IsVerbose()
-	log := util.NewLog("", verbose)
+	log := util.NewLog("", config.IsVerbose())
 
 	if !files.HasIndex() {
 		log.E("No index.html found")
 		os.Exit(1)
 	}
 
-	serv := server.New(verbose)
+	serv := server.New()
 
 	if err := serv.Start(); err != nil {
 		log.E(err)
