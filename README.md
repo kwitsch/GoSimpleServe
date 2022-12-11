@@ -49,7 +49,7 @@ field-name3:
   variableType: string
 ```
 
-Witha an environment:
+With an environment:
 
 - FIELD1=true
 - FIELD3=nothing
