@@ -26,12 +26,14 @@ func New() *Server {
 	mux.Handle("/", http.FileServer(http.Dir(files.StaticFilesDir)))
 
 	if config.FilesEndpointEnabled() {
-		s.log.V("files enpoint is enabled")
+		s.log.M("Files enpoint is enabled")
+		s.log.V("Files:\n" + files.GetFiles() + "\n---------")
 		mux.HandleFunc("/files", s.getFiles)
 	}
 
 	if config.HasConfigTemplate() {
-		s.log.V("has config")
+		s.log.M("Has config")
+		s.log.V("Config:\n" + config.GetConfig() + "\n---------")
 		mux.HandleFunc("/config", s.getConfig)
 	}
 
@@ -45,15 +47,13 @@ func (s *Server) Start() error {
 }
 
 func (s *Server) getFiles(w http.ResponseWriter, r *http.Request) {
-	s.log.V("got /files request")
 	f := files.GetFiles()
-	s.log.V("responese:\n", f)
+	s.log.V("Response for /files:\n" + f)
 	io.WriteString(w, f)
 }
 
 func (s *Server) getConfig(w http.ResponseWriter, r *http.Request) {
-	s.log.V("got /config request")
 	c := config.GetConfig()
-	s.log.V("responese:\n", c)
+	s.log.V("Response for /config:\n" + c)
 	io.WriteString(w, c)
 }
