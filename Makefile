@@ -1,4 +1,4 @@
-.PHONY: test build docker-build help
+.PHONY: test gernerate build docker-build help
 .DEFAULT_GOAL:=help
 
 GOARCH?=$(shell go env GOARCH)
@@ -6,6 +6,9 @@ GOARM?=$(shell go env GOARM)
 
 test: ## run tests
 	go run github.com/onsi/ginkgo/v2/ginkgo --coverprofile=coverage.txt --covermode=atomic -cover ./...
+
+gernerate: ## run go generate
+	go generate ./..
 
 build:  ## Build binary
 	go build -v -ldflags="-w -s" -o /tmp/gss
