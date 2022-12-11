@@ -2,8 +2,12 @@
 package config
 
 import (
+	"bytes"
+	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
+	"strconv"
 
 	"gopkg.in/yaml.v2"
 )
@@ -42,7 +46,48 @@ func readConfig(file string) (string, bool) {
 		return "", false
 	}
 
-	res := ""
+	return buildJson(&cfgf)
+}
 
-	return res, true
+func buildJson(cfgf *ConfigFile) (string, bool) {
+	iterator := 0
+	var writeBuf bytes.Buffer
+	fmt.Fprint(&writeBuf, "{ ")
+	for name, val := range cfgf.Fields {
+		if iterator > 0 {
+			fmt.Fprint(&writeBuf, ", ")
+		}
+
+		if sval, err := val.String(); err == nil {
+			fmt.Fprintf(&writeBuf, "\"%s\": %s", name, sval)
+		}
+
+		iterator++
+	}
+
+	fmt.Fprint(&writeBuf, "}")
+
+	var out bytes.Buffer
+	if err := json.Indent(&out, writeBuf.Bytes(), "", "  "); err == nil {
+		return out.String(), true
+	}
+
+	return "", false
+}
+
+func (f *ConfigField) String() (string, error) {
+	switch f.VariableType {
+	case VarTypeString:
+		return fmt.Sprintf("\"%s\"", getEnvString(f.EnvVariable, f.DefaultValue)), nil
+	case VarTypeBool:
+		if def, err := strconv.ParseBool(f.DefaultValue); err == nil {
+			return fmt.Sprintf("%t", getEnvBool(f.EnvVariable, def)), nil
+		}
+	case VarTypeInt:
+		if def, err := strconv.Atoi(f.DefaultValue); err == nil {
+			return fmt.Sprintf("%d", getEnvInt(f.EnvVariable, def)), nil
+		}
+	}
+
+	return "", errors.New("Field Error")
 }
