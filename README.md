@@ -28,7 +28,7 @@ Fields require these configurations:
 |--------------|-----------------------|-------------------------------------------------------|
 | envVariable  | String                | Environment variable name to map                      |
 | defaultValue | String                | Default value which is used if environment is not set |
-| variableType | Enum(bool,int,string) | variable type                                         |
+| variableType | Enum(bool,int,string) | variable type (Default value: string)                 |
 
 ### Example
 

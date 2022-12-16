@@ -9,6 +9,7 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/creasty/defaults"
 	"gopkg.in/yaml.v2"
 )
 
@@ -22,7 +23,7 @@ type VarType uint8
 type ConfigField struct {
 	EnvVariable  string  `yaml:"envVariable"`
 	DefaultValue string  `yaml:"defaultValue"`
-	VariableType VarType `yaml:"variableType"`
+	VariableType VarType `yaml:"variableType" default:"string"`
 }
 
 type ConfigFile struct {
@@ -41,6 +42,10 @@ func readConfig(file string) (string, bool) {
 	}
 
 	var cfgf ConfigFile
+	if err := defaults.Set(&cfgf); err != nil {
+		return "", false
+	}
+
 	err = yaml.UnmarshalStrict(data, &cfgf)
 	if err != nil {
 		return "", false

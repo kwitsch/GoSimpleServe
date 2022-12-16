@@ -37,6 +37,7 @@ require (
 
 require (
 	github.com/abice/go-enum v0.5.3
+	github.com/creasty/defaults v1.6.0
 	github.com/dosgo/zigtool v0.0.0-20210923085854-9c6fc1d62198
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/onsi/ginkgo/v2 v2.5.1
