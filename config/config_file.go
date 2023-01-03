@@ -16,7 +16,8 @@ import (
 // Variable type ENUM(
 // string // String
 // bool   // Boolean
-// int   // Integer
+// int    // Integer
+// array  // Array
 // )
 type VarType uint8
 
@@ -24,6 +25,7 @@ type ConfigField struct {
 	EnvVariable  string  `yaml:"envVariable"`
 	DefaultValue string  `yaml:"defaultValue"`
 	VariableType VarType `yaml:"variableType" default:"string"`
+	Separator    string  `yaml:"separator" default:" "`
 }
 
 type ConfigFile struct {
@@ -92,6 +94,8 @@ func (f *ConfigField) String() (string, error) {
 		if def, err := strconv.Atoi(f.DefaultValue); err == nil {
 			return fmt.Sprintf("%d", getEnvInt(f.EnvVariable, def)), nil
 		}
+	case VarTypeArray:
+		return getEnvArrayString(f.EnvVariable, f.DefaultValue, f.Separator), nil
 	}
 
 	return "", errors.New("Field Error")

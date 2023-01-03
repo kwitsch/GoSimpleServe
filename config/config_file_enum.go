@@ -21,16 +21,20 @@ const (
 	// VarTypeInt is a VarType of type Int.
 	// Integer
 	VarTypeInt
+	// VarTypeArray is a VarType of type Array.
+	// Array
+	VarTypeArray
 )
 
 var ErrInvalidVarType = fmt.Errorf("not a valid VarType, try [%s]", strings.Join(_VarTypeNames, ", "))
 
-const _VarTypeName = "stringboolint"
+const _VarTypeName = "stringboolintarray"
 
 var _VarTypeNames = []string{
 	_VarTypeName[0:6],
 	_VarTypeName[6:10],
 	_VarTypeName[10:13],
+	_VarTypeName[13:18],
 }
 
 // VarTypeNames returns a list of possible string values of VarType.
@@ -44,6 +48,7 @@ var _VarTypeMap = map[VarType]string{
 	VarTypeString: _VarTypeName[0:6],
 	VarTypeBool:   _VarTypeName[6:10],
 	VarTypeInt:    _VarTypeName[10:13],
+	VarTypeArray:  _VarTypeName[13:18],
 }
 
 // String implements the Stringer interface.
@@ -58,6 +63,7 @@ var _VarTypeValue = map[string]VarType{
 	_VarTypeName[0:6]:   VarTypeString,
 	_VarTypeName[6:10]:  VarTypeBool,
 	_VarTypeName[10:13]: VarTypeInt,
+	_VarTypeName[13:18]: VarTypeArray,
 }
 
 // ParseVarType attempts to convert a string to a VarType.
