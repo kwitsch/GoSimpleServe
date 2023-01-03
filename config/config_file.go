@@ -9,20 +9,23 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/creasty/defaults"
 	"gopkg.in/yaml.v2"
 )
 
 // Variable type ENUM(
 // string // String
 // bool   // Boolean
-// int   // Integer
+// int    // Integer
+// array  // Array
 // )
 type VarType uint8
 
 type ConfigField struct {
 	EnvVariable  string  `yaml:"envVariable"`
 	DefaultValue string  `yaml:"defaultValue"`
-	VariableType VarType `yaml:"variableType"`
+	VariableType VarType `yaml:"variableType" default:"string"`
+	Separator    string  `yaml:"separator" default:" "`
 }
 
 type ConfigFile struct {
@@ -41,6 +44,10 @@ func readConfig(file string) (string, bool) {
 	}
 
 	var cfgf ConfigFile
+	if err := defaults.Set(&cfgf); err != nil {
+		return "", false
+	}
+
 	err = yaml.UnmarshalStrict(data, &cfgf)
 	if err != nil {
 		return "", false
@@ -87,6 +94,8 @@ func (f *ConfigField) String() (string, error) {
 		if def, err := strconv.Atoi(f.DefaultValue); err == nil {
 			return fmt.Sprintf("%d", getEnvInt(f.EnvVariable, def)), nil
 		}
+	case VarTypeArray:
+		return getEnvArrayString(f.EnvVariable, f.DefaultValue, f.Separator), nil
 	}
 
 	return "", errors.New("Field Error")

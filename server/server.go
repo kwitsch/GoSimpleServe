@@ -25,6 +25,11 @@ func New() *Server {
 	mux := http.NewServeMux()
 	mux.Handle("/", http.FileServer(http.Dir(files.StaticFilesDir)))
 
+	if !files.HasIndex() {
+		s.log.M("Has no index file")
+		mux.HandleFunc("/index.html", s.getFakeIndex)
+	}
+
 	if config.FilesEndpointEnabled() {
 		s.log.M("Files enpoint is enabled")
 		s.log.V("Files:\n" + files.GetFiles() + "\n---------")
@@ -44,6 +49,11 @@ func New() *Server {
 
 func (s *Server) Start() error {
 	return http.ListenAndServe(fmt.Sprintf(":%d", serverPort), s.mux)
+}
+
+func (s *Server) getFakeIndex(w http.ResponseWriter, r *http.Request) {
+	s.log.V("Response for /index.html: OK")
+	io.WriteString(w, "OK")
 }
 
 func (s *Server) getFiles(w http.ResponseWriter, r *http.Request) {
