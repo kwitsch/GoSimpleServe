@@ -38,7 +38,7 @@ func serve() (int, error) {
 func healthcheck() (int, error) {
 	log := util.NewLog("Healthcheck:", false)
 
-	if _, err := http.Get("http://127.0.0.1"); err != nil {
+	if _, err := http.Get("http://127.0.0.1/index.html"); err != nil {
 		log.M("Fail")
 
 		return 1, nil

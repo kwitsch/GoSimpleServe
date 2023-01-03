@@ -3,7 +3,7 @@
 Tiny static http server container.  
 
 All files in the `/static` folder will be served via http.  
-The `/static/index.html` file is mandetory for the container startup.  
+If `/static/index.html` file is not provided the request will return OK.  
 
 All environment variables are read at container start and won't refreshed afterwards.
 
