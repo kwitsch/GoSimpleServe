@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/kwitsch/GoSimpleServe/files"
 	"github.com/kwitsch/GoSimpleServe/server"
 	"github.com/kwitsch/GoSimpleServe/util"
 )
@@ -22,10 +21,6 @@ func RunCmd() (int, error) {
 }
 
 func serve() (int, error) {
-	if !files.HasIndex() {
-		return 1, errors.New("No index.html found")
-	}
-
 	serv := server.New()
 
 	if err := serv.Start(); err != nil {
