@@ -24,11 +24,12 @@ This endpoint returns a json with values set in the container environment.
 Each entry represents a field in the resulting json.  
 Fields require these configurations:  
 
-| Field        | Type                  | Description                                           |
-|--------------|-----------------------|-------------------------------------------------------|
-| envVariable  | String                | Environment variable name to map                      |
-| defaultValue | String                | Default value which is used if environment is not set |
-| variableType | Enum(bool,int,string) | variable type (Default value: string)                 |
+| Field        | Type                        | Description                                            |
+|--------------|-----------------------------|--------------------------------------------------------|
+| envVariable  | String                      | Environment variable name to map                       |
+| defaultValue | String                      | Default value which is used if environment is not set  |
+| variableType | Enum(bool,int,string,array) | variable type (Default value: string)                  |
+| separator    | String                      | Character to separate strings if variableType is array |
 
 ### Example
 
@@ -47,6 +48,11 @@ field-name3:
   envVariable: FIELD3
   defaultValue: test
   variableType: string
+field-name4:
+  envVariable: FIELD4
+  defaultValue: test1,test2,test3
+  variableType: array
+  separator: ","
 ```
 
 With an environment:
@@ -60,6 +66,11 @@ Results in an /config response of:
 {
     "field-name1": true,
     "field-name2": 1,
-    "field-name3": "nothing"
+    "field-name3": "nothing",
+    "field-name4": [
+      "test1",
+      "test2",
+      "test3"
+    ]
 }
 ```
